@@ -2,6 +2,6 @@ package entity;
 
 import javafx.scene.image.ImageView;
 
-public class Enemy extends ImageView {
-
+public abstract class Enemy extends ImageView {
+	public abstract void dumpMove();
 }
