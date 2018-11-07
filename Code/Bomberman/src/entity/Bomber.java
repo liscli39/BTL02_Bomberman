@@ -9,7 +9,7 @@ import javafx.scene.image.ImageView;
 public class Bomber extends ImageView {
 	private int numBomb;
 	private int bombWasSet;
-	private int speed;
+	private double speed;
 	
 	public Bomber(int x, int y) {
 		super();
@@ -57,7 +57,7 @@ public class Bomber extends ImageView {
 		if(this.bombWasSet>0)
 		this.bombWasSet--;
 	}
-	public int getSpeed() {
+	public double getSpeed() {
 		return speed;
 	}
 	public void speedUp() {

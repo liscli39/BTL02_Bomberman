@@ -12,7 +12,7 @@ public class Main extends Application {
 	public void start(Stage primaryStage) {
 		try {
 			GameMap root = new GameMap();/*(AnchorPane)FXMLLoader.load(getClass().getResource("GameMap.fxml"));*/
-			Scene scene = new Scene(root);
+			Scene scene = new Scene(root,930,390);
 			primaryStage.setScene(scene);
 			primaryStage.show();
 			

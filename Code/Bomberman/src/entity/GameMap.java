@@ -12,15 +12,19 @@ import javafx.scene.layout.AnchorPane;
 import management.GetInput;
 
 public class GameMap extends AnchorPane{
-	private GetInput get; 
+	
+	private static GetInput get; 
+	private static List<String> map;
 	private Map<KeyCode, Boolean> key;
+	
+	private Bomber bomber;
 	private List<Wall> walls;
 	private List<Brick> bricks;
 	private List<Portal> portals;
 	private List<Enemy> enemys;
 	private List<Item> items;
-	private Bomber bomber;
 	private List<Bomb> bombs;
+	private List<Flame> flames;
 	
 	public GameMap(){
 		super();
@@ -39,14 +43,19 @@ public class GameMap extends AnchorPane{
 		items = new LinkedList<>();
 		bomber = new Bomber(30,30);
 		bombs = new ArrayList<>();
+		flames = new ArrayList<>();
 		
 		this.setPrefWidth(get.getWeight()*30);
 		this.setPrefHeight(get.getHeight()*30);
 		
-		List<String> map = get.getMap();
+		map = get.getMap();
+		
 		int y = 0;
 		for(String line : map) {
 			for(int x=0;x<line.length();x++) {
+				Grass g = new Grass(x,y);
+				this.getChildren().add(g);
+				g.toBack();
 				switch(line.charAt(x)) {
 					case '#':
 						Wall w = new Wall(x,y);
@@ -154,16 +163,27 @@ public class GameMap extends AnchorPane{
 		key.forEach((k,v) -> {
 			switch (k) {
 				case UP:
-					if(v) bomber.moveUp();
+					
+					if(v && checkImpact(bomber)) bomber.moveUp();
 					break;
 				case DOWN:
 					if(v) bomber.moveDown();
 					break;
 				case RIGHT:
-					if(v) bomber.moveRight();
+					if(v) {
+						bomber.moveRight();
+//						if(bomber.getTranslateX() > 150 && this.getTranslateX() > 0 ) {
+//							this.setTranslateX(this.getTranslateX()- bomber.getSpeed());
+//						}
+					}
 					break;
 				case LEFT:
-					if(v) bomber.moveLeft();
+					if(v) {
+						bomber.moveLeft();
+//						if(bomber.getTranslateX() < 930-150 && this.getTranslateX() < 0) {
+//							this.setTranslateX(this.getTranslateX()+ bomber.getSpeed());
+//						}
+					}
 					break;
 				default:
 					break;					
@@ -174,18 +194,47 @@ public class GameMap extends AnchorPane{
 		while(ib.hasNext()){
 			Bomb b = ib.next();
 			if(b.getTimeOff()> 0) {
-				System.out.println(b.getTimeOff());
 				b.timeDown();
 			}else {
-				b.explosive();
+				flames = b.explosive();
 				bomber.addBomb();
 				this.getChildren().remove(b);
+				flames.forEach(f->{
+					this.getChildren().add(f);
+				});
 				ib.remove();
 			}
 		}
-		//
+		// 
+		Iterator<Flame> ifl = flames.listIterator();
+		while(ifl.hasNext()){
+			Flame f = ifl.next();
+			if(f.getTimeOff()> 0) {
+				f.timeDown();
+			}else {
+				this.getChildren().remove(f);
+				ifl.remove();
+			}
+		}
+		//enemy move
 		enemys.forEach(e ->{
 			e.dumpMove();
 		});
+	}
+
+	public static void getMap() {
+		
+	}
+	
+	private boolean checkImpact(Object obj) {
+		if(obj instanceof Bomber) {
+			walls.forEach(w->{
+
+			});
+			bricks.forEach(b->{
+				
+			});
+		}
+		return true;
 	}
 }
