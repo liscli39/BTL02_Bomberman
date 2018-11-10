@@ -1,39 +1,89 @@
 package application;
 	
 import entity.GameMap;
-import javafx.animation.AnimationTimer;
 import javafx.application.Application;
+import javafx.event.EventHandler;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
-import management.GetInput;
+import javafx.stage.StageStyle;
 	
 public class Main extends Application {
+    private double xOffset = 0;
+    private double yOffset = 0;
 	@Override
 	public void start(Stage primaryStage) {
 		try {
-			GameMap root = new GameMap();/*(AnchorPane)FXMLLoader.load(getClass().getResource("GameMap.fxml"));*/
-			Scene scene = new Scene(root,930,390);
+			primaryStage.initStyle(StageStyle.UNDECORATED);
+			
+			Parent root = FXMLLoader.load(getClass().getResource("scene.fxml"));
+			Scene scene = new Scene(root);
 			primaryStage.setScene(scene);
 			primaryStage.show();
 			
-			AnimationTimer timer = new AnimationTimer() {
+	        root.setOnMousePressed(new EventHandler<MouseEvent>(){
+	            @Override
+	            public void handle(MouseEvent event){
+	                xOffset = event.getSceneX();
+	                yOffset = event.getSceneY();
+	            }
+	        });
+	        root.setOnMouseDragged(new EventHandler<MouseEvent>(){
+	            @Override
+	            public void handle(MouseEvent event){
+	            	primaryStage.setX(event.getScreenX() - xOffset);
+	            	primaryStage.setY(event.getScreenY() - yOffset);            }
+	        });
+			root.setOnKeyPressed(new EventHandler<KeyEvent>(){
 				@Override
-				public void handle(long now) {
-					root.update();	
+				public void handle(KeyEvent event) {
+					if(event.getCode() == KeyCode.W || event.getCode() == KeyCode.UP) {
+						GameMap.keyBoard.put(KeyCode.W, true);
+					}
+					if(event.getCode() == KeyCode.S|| event.getCode() == KeyCode.DOWN) {
+						GameMap.keyBoard.put(KeyCode.S, true);
+					}
+					if(event.getCode() == KeyCode.D|| event.getCode() == KeyCode.RIGHT) {
+						GameMap.keyBoard.put(KeyCode.D, true);
+					}
+					if(event.getCode() == KeyCode.A|| event.getCode() == KeyCode.LEFT) {
+						GameMap.keyBoard.put(KeyCode.A, true);
+					}
+					if(event.getCode() == KeyCode.SPACE) {
+						GameMap.keyBoard.put(KeyCode.SPACE, true);
+					}
 				}
-			};		
-			timer.start();
-			
+			});
+			root.setOnKeyReleased(new EventHandler<KeyEvent>(){
+				@Override
+				public void handle(KeyEvent event) {
+					if(event.getCode() == KeyCode.W || event.getCode() == KeyCode.UP) {
+						GameMap.keyBoard.put(KeyCode.W, false);
+					}
+					if(event.getCode() == KeyCode.S|| event.getCode() == KeyCode.DOWN) {
+						GameMap.keyBoard.put(KeyCode.S, false);
+					}
+					if(event.getCode() == KeyCode.D|| event.getCode() == KeyCode.RIGHT) {
+						GameMap.keyBoard.put(KeyCode.D, false);
+					}
+					if(event.getCode() == KeyCode.A|| event.getCode() == KeyCode.LEFT) {
+						GameMap.keyBoard.put(KeyCode.A, false);
+					}
+					if(event.getCode() == KeyCode.SPACE) {
+						GameMap.keyBoard.put(KeyCode.SPACE, false);
+					}
+				}
+			});
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
 	}
 	
 	public static void main(String[] args) {
-		GetInput get = new GetInput(1);
-		get.printMap();
-		System.out.println(get.getHeight());
-		System.out.println(get.getWeight());
 		launch(args);
 	}
 }

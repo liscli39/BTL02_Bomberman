@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.paint.RadialGradient?>
+<?import javafx.scene.paint.Stop?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane focusTraversable="true" prefHeight="420.0" prefWidth="390.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.SceneController">
+   <children>
+      <AnchorPane prefHeight="30.0" prefWidth="390.0" style="-fx-background-color: #55351D;">
+         <children>
+            <ImageView fx:id="exitButton" fitHeight="25.0" fitWidth="25.0" focusTraversable="true" layoutX="355.0" layoutY="2.0" onMouseClicked="#onMouseClickedEvent" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../image/brick3.png" />
+               </image>
+            </ImageView>
+         </children>
+      </AnchorPane>
+      <AnchorPane fx:id="scene" focusTraversable="true" layoutY="30.0" prefHeight="390.0" prefWidth="390.0" style="-fx-background-color: #AACAE2;">
+         <children>
+            <AnchorPane fx:id="start" prefHeight="390.0" prefWidth="390.0">
+               <children>
+                  <Button fx:id="playBtn" layoutX="104.0" layoutY="144.0" mnemonicParsing="false" onAction="#platBtnAction" prefHeight="51.0" prefWidth="182.0" text="Play">
+                     <font>
+                        <Font name="Arial Bold" size="27.0" />
+                      </font>
+                  </Button>
+               </children>
+            </AnchorPane>
+            <AnchorPane fx:id="pause" layoutY="95.0" opacity="0.83" prefHeight="200.0" prefWidth="390.0" style="-fx-background-color: #DD5043;" visible="false">
+               <children>
+                  <Button fx:id="again" layoutX="42.0" layoutY="101.0" mnemonicParsing="false" onAction="#againBtnAction" prefHeight="25.0" prefWidth="135.0" text="Play Again" />
+                  <Label layoutX="42.0" layoutY="29.0" text="Game Over">
+                     <font>
+                        <Font name="Arial Bold" size="41.0" />
+                     </font>
+                     <textFill>
+                        <RadialGradient centerX="0.3555555555555555" centerY="0.4666666666666667" cycleMethod="REFLECT" focusAngle="7.91" radius="0.5">
+                           <stops>
+                              <Stop color="BLACK" />
+                              <Stop color="BLACK" offset="0.0766283524904214" />
+                              <Stop color="#952fd6bf" offset="1.0" />
+                           </stops>
+                        </RadialGradient>
+                     </textFill>
+                  </Label>
+                  <Button fx:id="exit" layoutX="42.0" layoutY="144.0" mnemonicParsing="false" onAction="#exitBtnAction" prefHeight="25.0" prefWidth="135.0" text="Exit" />
+               </children>
+            </AnchorPane>
+         </children>
+      </AnchorPane>
+   </children>
+</AnchorPane>

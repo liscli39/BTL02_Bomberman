@@ -26,7 +26,7 @@ public class GetInput {
 	private void getFileName(){
 	}
     private void insertFromFile(){
-    	String fileName = "src/map/map0.txt";/*fileNames.get(mapNumber);*/
+    	String fileName = "src/map/map"+ mapNumber+".txt";/*fileNames.get(mapNumber);*/
         try{
             FileReader fileReader = new FileReader(fileName);        
             BufferedReader bReader = new BufferedReader(fileReader);
