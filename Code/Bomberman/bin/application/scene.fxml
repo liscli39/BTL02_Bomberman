@@ -24,11 +24,12 @@
          <children>
             <AnchorPane fx:id="start" prefHeight="390.0" prefWidth="390.0">
                <children>
-                  <Button fx:id="playBtn" layoutX="104.0" layoutY="144.0" mnemonicParsing="false" onAction="#platBtnAction" prefHeight="51.0" prefWidth="182.0" text="Play">
+                  <Button fx:id="playBtn" layoutX="104.0" layoutY="80.0" mnemonicParsing="false" onAction="#platBtnAction" prefHeight="51.0" prefWidth="182.0" text="Play">
                      <font>
                         <Font name="Arial Bold" size="27.0" />
                       </font>
                   </Button>
+                  <Button fx:id="full" layoutX="104.0" layoutY="162.0" mnemonicParsing="false" onAction="#fullScreenBtnAction" prefHeight="25.0" prefWidth="182.0" text="Full screen" />
                </children>
             </AnchorPane>
             <AnchorPane fx:id="pause" layoutY="95.0" opacity="0.83" prefHeight="200.0" prefWidth="390.0" style="-fx-background-color: #DD5043;" visible="false">

@@ -4,6 +4,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
 import entity.bomb.Bomb;
+import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.Image;
 
 public class Bomber extends Character {
@@ -32,10 +33,10 @@ public class Bomber extends Character {
 		this.scale = scale;
 		numBomb = 3;
 		bombWasSet = 0;
-		speed = (double)scale/60;
+		speed = (double)scale/30;
 		flameLength = 2;
 		isDeath = false;
-		numLife = 0;
+		numLife = 2;
 		nonDieTime = 100;
 	}
 	public void setPosision(int x, int y) {
@@ -178,14 +179,11 @@ public class Bomber extends Character {
 	}
 	public void timeOff() {
 		this.nonDieTime -= 1;
-		try {
+		ColorAdjust ca = new ColorAdjust();	
+		this.setEffect(ca);
 			if(nonDieTime % 10 > 5)
-			this.setImage(new Image(new FileInputStream("src/image/bomber.png")));
-			else this.setImage(new Image(new FileInputStream("src/image/main/1.png")));
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+				ca.setBrightness(0.8);
+			else ca.setBrightness(0);
 	}
 	public int getTimeNonDie() {
 		return this.nonDieTime;

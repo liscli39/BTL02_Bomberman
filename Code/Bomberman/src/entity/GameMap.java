@@ -45,7 +45,6 @@ public class GameMap extends AnchorPane{
 	private List<Item> items;
 	private List<Bomb> bombs;
 	private List<Flame> flames;
-
 	
 	public GameMap(int scale, int map){
 		super();
@@ -80,6 +79,8 @@ public class GameMap extends AnchorPane{
 		bombs = new ArrayList<>();
 		flames = new ArrayList<>();
 		
+		this.setTranslateX(0);
+		this.setTranslateY(0);
 		this.setPrefWidth(get.getWeight()*scale);
 		this.setPrefHeight(get.getHeight()*scale);
 		this.setFocusTraversable(true);
@@ -181,8 +182,8 @@ public class GameMap extends AnchorPane{
 					if(v && collision.canMove(bomber, "right", scale, barriers)
 							&& !collision.hitBomb(bomber, mapc, scale, "right")) {
 						bomber.moveRight();
-						if(bomber.getTranslateX() > 150 && this.getTranslateX() >= 390-930 ) {
-							this.setTranslateX(this.getTranslateX() - (int)bomber.getSpeed());
+						if(bomber.getTranslateX() > (this.getHeight()/2) && this.getTranslateX() >= this.getHeight()-this.getWidth() ) {
+							this.setTranslateX(this.getTranslateX() - bomber.getSpeed());
 						}
 					}
 					break;
@@ -190,13 +191,14 @@ public class GameMap extends AnchorPane{
 					if(v && collision.canMove(bomber, "left", scale, barriers)
 							&& !collision.hitBomb(bomber, mapc, scale, "left")) {
 						bomber.moveLeft();
-						if(bomber.getTranslateX() < 930-150 && this.getTranslateX() <= 0) {
-							this.setTranslateX(this.getTranslateX()+ (int)bomber.getSpeed());
+						if(bomber.getTranslateX() < this.getWidth()- this.getHeight()/2 && this.getTranslateX() <= 0) {
+							this.setTranslateX(this.getTranslateX()+ bomber.getSpeed());
 						}
 					}
 					break;
 				case SPACE:
 					if(v) {
+						
 						v = false;
 						if(bomber.hasBomb()) {
 							Bomb nb = bomber.putBomb();

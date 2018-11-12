@@ -12,6 +12,7 @@ import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
 
 public class SceneController implements Initializable{
 	AnimationTimer timer;
@@ -21,7 +22,7 @@ public class SceneController implements Initializable{
 	@FXML
 	private AnchorPane scene,start,pause;
 	@FXML
-	private Button playBtn,again,exit;
+	private Button playBtn,again,exit,full;
 	@FXML
 	private void onMouseClickedEvent(MouseEvent event) {
         if(event.getTarget() == exitButton){
@@ -41,6 +42,16 @@ public class SceneController implements Initializable{
 		scene.getChildren().remove(map);
 	}
 	@FXML
+	private void fullScreenBtnAction(ActionEvent event) {
+		System.out.println("full");
+		Stage stage = (Stage) full.getScene().getWindow();
+		stage.setMaximized(true);
+		
+		scene.setPrefWidth(stage.getWidth());
+		scene.setPrefHeight(stage.getHeight());
+//		stage.setFullScreen(true);
+	}
+	@FXML
 	private void platBtnAction(ActionEvent event) {
 		start.setVisible(false);
 		map.playAgain();
@@ -48,6 +59,7 @@ public class SceneController implements Initializable{
 		map.setLayoutY(0);
 		map.setTranslateX(0);
 		map.setTranslateY(0);
+		
 		scene.getChildren().add(map);
 		map.setFocusTraversable(true);
 		
@@ -57,11 +69,12 @@ public class SceneController implements Initializable{
 			public void handle(long now) {
                 if (now - lastUpdate >= 10_000_000) {
                     lastUpdate = now ;
-					if(map.update() == 1) {
+                    int n = map.update();
+					if(n == 1) {
 						pause.setVisible(true);
 						pause.toFront();
 						this.stop();
-					}else if(map.update() == 2) {
+					}else if(n == 2) {
 						map.nextLevel();
 					}
                 }
