@@ -9,49 +9,60 @@
 <?import javafx.scene.paint.Stop?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane focusTraversable="true" prefHeight="420.0" prefWidth="390.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.SceneController">
+<AnchorPane focusTraversable="true" prefHeight="540.0" prefWidth="620.0" style="-fx-background-color: #8E4205;" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.SceneController">
    <children>
-      <AnchorPane prefHeight="30.0" prefWidth="390.0" style="-fx-background-color: #55351D;">
+      <AnchorPane fx:id="blank2" prefHeight="540.0" prefWidth="10.0" style="-fx-background-color: #8E4205;" />
+      <AnchorPane fx:id="scene" focusTraversable="true" layoutX="10.0" layoutY="10.0" prefHeight="520.0" prefWidth="600.0" style="-fx-background-color: #AACAE2;">
          <children>
-            <ImageView fx:id="exitButton" fitHeight="25.0" fitWidth="25.0" focusTraversable="true" layoutX="355.0" layoutY="2.0" onMouseClicked="#onMouseClickedEvent" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../image/brick3.png" />
-               </image>
-            </ImageView>
-         </children>
-      </AnchorPane>
-      <AnchorPane fx:id="scene" focusTraversable="true" layoutY="30.0" prefHeight="390.0" prefWidth="390.0" style="-fx-background-color: #AACAE2;">
-         <children>
-            <AnchorPane fx:id="start" prefHeight="390.0" prefWidth="390.0">
+            <AnchorPane fx:id="play" prefHeight="520.0" prefWidth="600.0" style="-fx-background-color: #8E4205;" />
+            <AnchorPane fx:id="start" prefHeight="520.0" prefWidth="600.0" style="-fx-background-color: #DA3B01;">
                <children>
-                  <Button fx:id="playBtn" layoutX="104.0" layoutY="80.0" mnemonicParsing="false" onAction="#platBtnAction" prefHeight="51.0" prefWidth="182.0" text="Play">
+                  <Button fx:id="playBtn" layoutX="209.0" layoutY="193.0" mnemonicParsing="false" onAction="#platBtnAction" prefHeight="51.0" prefWidth="182.0" text="Play">
                      <font>
                         <Font name="Arial Bold" size="27.0" />
                       </font>
                   </Button>
-                  <Button fx:id="full" layoutX="104.0" layoutY="162.0" mnemonicParsing="false" onAction="#fullScreenBtnAction" prefHeight="25.0" prefWidth="182.0" text="Full screen" />
-               </children>
-            </AnchorPane>
-            <AnchorPane fx:id="pause" layoutY="95.0" opacity="0.83" prefHeight="200.0" prefWidth="390.0" style="-fx-background-color: #DD5043;" visible="false">
-               <children>
-                  <Button fx:id="again" layoutX="42.0" layoutY="101.0" mnemonicParsing="false" onAction="#againBtnAction" prefHeight="25.0" prefWidth="135.0" text="Play Again" />
-                  <Label layoutX="42.0" layoutY="29.0" text="Game Over">
+                  <Button fx:id="full" disable="true" layoutX="209.0" layoutY="319.0" mnemonicParsing="false" onAction="#fullScreenBtnAction" prefHeight="25.0" prefWidth="182.0" text="Full screen" />
+                  <Button fx:id="exitButton" layoutX="209.0" layoutY="362.0" mnemonicParsing="false" onAction="#quitBtnAction" prefHeight="25.0" prefWidth="182.0" text="Quit" />
+                  <AnchorPane fx:id="over" layoutY="138.0" prefHeight="230.0" prefWidth="600.0" style="-fx-background-color: #515477;" visible="false">
+                     <children>
+                        <Button fx:id="again" layoutX="42.0" layoutY="101.0" mnemonicParsing="false" onAction="#againBtnAction" prefHeight="25.0" prefWidth="135.0" text="Play Again" />
+                        <Label layoutX="42.0" layoutY="29.0" text="Game Over">
+                           <font>
+                              <Font name="Arial Bold" size="41.0" />
+                           </font>
+                           <textFill>
+                              <RadialGradient centerX="0.3555555555555555" centerY="0.4666666666666667" cycleMethod="REFLECT" focusAngle="7.91" radius="0.5">
+                                 <stops>
+                                    <Stop color="BLACK" />
+                                    <Stop color="BLACK" offset="0.0766283524904214" />
+                                    <Stop color="#952fd6bf" offset="1.0" />
+                                 </stops>
+                              </RadialGradient>
+                           </textFill>
+                        </Label>
+                        <Button fx:id="exit" layoutX="42.0" layoutY="144.0" mnemonicParsing="false" onAction="#exitBtnAction" prefHeight="25.0" prefWidth="135.0" text="Exit" />
+                     </children>
+                  </AnchorPane>
+                  <Button fx:id="pvsp" layoutX="209.0" layoutY="260.0" mnemonicParsing="false" onAction="#pvspBtnAction" prefHeight="36.0" prefWidth="182.0" text="Player vs Player" textAlignment="CENTER">
                      <font>
-                        <Font name="Arial Bold" size="41.0" />
+                        <Font name="Century Gothic Bold" size="15.0" />
                      </font>
-                     <textFill>
-                        <RadialGradient centerX="0.3555555555555555" centerY="0.4666666666666667" cycleMethod="REFLECT" focusAngle="7.91" radius="0.5">
-                           <stops>
-                              <Stop color="BLACK" />
-                              <Stop color="BLACK" offset="0.0766283524904214" />
-                              <Stop color="#952fd6bf" offset="1.0" />
-                           </stops>
-                        </RadialGradient>
-                     </textFill>
-                  </Label>
-                  <Button fx:id="exit" layoutX="42.0" layoutY="144.0" mnemonicParsing="false" onAction="#exitBtnAction" prefHeight="25.0" prefWidth="135.0" text="Exit" />
+                  </Button>
                </children>
             </AnchorPane>
+         </children>
+      </AnchorPane>
+      <AnchorPane fx:id="blank1" layoutX="610.0" prefHeight="540.0" prefWidth="10.0" style="-fx-background-color: #8E4205;" />
+      <ImageView fx:id="set" fitHeight="25.0" fitWidth="23.0" layoutX="575.0" layoutY="20.0" onMouseClicked="#setBtnAction" pickOnBounds="true" preserveRatio="true" visible="false">
+         <image>
+            <Image url="@../image/brick3.png" />
+         </image>
+      </ImageView>
+      <AnchorPane fx:id="pause" layoutX="10.0" layoutY="150.0" prefHeight="230.0" prefWidth="600.0" style="-fx-background-color: #DD4F43;" visible="false">
+         <children>
+            <Button layoutX="100.0" layoutY="38.0" mnemonicParsing="false" onAction="#continueBtnAction" text="Continue" />
+            <Button layoutX="100.0" layoutY="82.0" mnemonicParsing="false" onAction="#exitBtnAction" text="Exit" />
          </children>
       </AnchorPane>
    </children>

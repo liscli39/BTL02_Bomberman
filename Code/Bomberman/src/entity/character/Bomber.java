@@ -16,11 +16,17 @@ public class Bomber extends Character {
 	private boolean isDeath;
 	private int numLife;
 	private int nonDieTime;
+	public static int ID = 0;
+	private int realID;
+	private int pos[];
 	
 	public Bomber(int x, int y, int scale) {
 		super();
+		realID = Bomber.ID ++;
+		
 		this.setFitWidth(scale);
 		this.setFitHeight(scale);
+		
 		this.setLayoutX(x);
 		this.setLayoutY(y);
 		try {
@@ -38,10 +44,25 @@ public class Bomber extends Character {
 		isDeath = false;
 		numLife = 2;
 		nonDieTime = 100;
+		pos = new int[2];
+		pos[0] = x;
+		pos[1] = y;
 	}
-	public void setPosision(int x, int y) {
+	public void setFirstPosision(int x, int y) {
+		System.out.println(this.realID + " " +x+ " " + y);
 		this.setTranslateX(x*scale);
 		this.setTranslateY(y*scale);
+		System.out.println(this.realID + " " +this.getTranslateX() + " " + this.getTranslateY());
+	}
+	public void setPosision(int x, int y) {
+		pos[0] = x;
+		pos[1] = y;
+	}
+	public boolean isCurrentPos(int x,int y) {
+		return pos[0]==x && pos[1]==y;
+	}
+	public int[] getPos() {
+		return pos;
 	}
 	//
 	public void moveUp() {
@@ -113,13 +134,13 @@ public class Bomber extends Character {
 		if(numBomb > bombWasSet) {
 			bombWasSet++;
 			int x,y;
-			if((int)this.getTranslateX()%this.scale < this.scale/2) x = (int)this.getTranslateX()/this.scale;
-			else  x = (int)this.getTranslateX()/this.scale + 1;
+			if((int)this.getTranslateX()%this.scale < this.scale/2) x = (int)(this.getTranslateX()/this.scale);
+			else  x = (int)(this.getTranslateX()/this.scale) + 1;
 			
-			if((int)this.getTranslateY()%this.scale < this.scale/2) y = (int)this.getTranslateY()/this.scale;
-			else  y = (int)this.getTranslateY()/this.scale + 1;
+			if((int)this.getTranslateY()%this.scale < this.scale/2) y = (int)(this.getTranslateY()/this.scale);
+			else  y = (int)(this.getTranslateY()/this.scale) + 1;
 			
-			Bomb b = new Bomb(x*scale,y*scale,scale,flameLength);
+			Bomb b = new Bomb(x*scale,y*scale,scale,flameLength,realID);
 			return b;
 		}else return null;
 	}
@@ -187,5 +208,8 @@ public class Bomber extends Character {
 	}
 	public int getTimeNonDie() {
 		return this.nonDieTime;
+	}
+	public int getPlayerId() {
+		return this.realID;
 	}
 }

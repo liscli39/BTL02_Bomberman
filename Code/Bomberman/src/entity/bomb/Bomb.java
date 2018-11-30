@@ -14,8 +14,9 @@ public class Bomb extends ImageView {
 	private int flameLength;
 	private List<Flame> flames;
 	private int scale;
+	private int playerId;
 	
-	public Bomb(double x, double y,int scale,int flameLength) {
+	public Bomb(double x, double y,int scale,int flameLength, int pId) {
 		super();
 		this.setFitWidth(scale);
 		this.setFitHeight(scale);
@@ -32,6 +33,7 @@ public class Bomb extends ImageView {
 		timeOff = 4;
 		this.flameLength = flameLength;
 		flames = new LinkedList<>();
+		playerId = pId;
 	}
 	public double getTimeOff() {
 		return timeOff;
@@ -95,5 +97,8 @@ public class Bomb extends ImageView {
 	}
 	public void flameUp() {
 		flameLength++;
+	}
+	public int getPlayerId() {
+		return this.playerId;
 	}
 }

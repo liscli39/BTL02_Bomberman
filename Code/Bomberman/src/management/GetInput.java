@@ -9,22 +9,22 @@ import java.util.List;
 import java.util.Scanner;
 
 public class GetInput {
-	private List<String> fileNames;
+//	private List<String> fileNames;
 	private List<String> map;
 	private int mapNumber;
 	private int weight;
 	private int height;
 	
 	public GetInput(int mapNum){
-		fileNames = new LinkedList<>();
+//		fileNames = new LinkedList<>();
 		map = new LinkedList<>();
 		mapNumber = mapNum;
 		weight  = -1;
 		height = -1;
 		insertFromFile();
 	}
-	private void getFileName(){
-	}
+//	private void getFileName(){
+//	}
     private void insertFromFile(){
     	String fileName = "src/map/map"+ mapNumber+".txt";/*fileNames.get(mapNumber);*/
         try{

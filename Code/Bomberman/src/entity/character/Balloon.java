@@ -33,7 +33,7 @@ public class Balloon extends Enemy{
 		this.x=x;
 		this.y=y;
 	}
-	public void dumpMove(char[][] map) {
+	public void dumpMove(char[][] map,int w, int h) {
 		if(isMoveRight && map[y][x+1] !='#' &&  map[y][x+1] !='*'&& map[y][x+1]!='b'){
 			if(this.getTranslateX()<(x+1)*this.scale) this.moveRight();
 			else x++;
@@ -44,24 +44,10 @@ public class Balloon extends Enemy{
 		}else isMoveRight =true;
 	}
 	public double getNextX(String direction) {
-		switch(direction) {
-		case "left":
-			return this.getTranslateX() - this.speed;
-		case "right":
-			return this.getTranslateX() + this.speed;
-		default:
-			return this.getTranslateX();
-		}
+		return 0;
 	}
 	public double getNextY(String direction) {
-		switch(direction) {
-		case "up":
-			return this.getTranslateY() - this.speed;
-		case "down":
-			return this.getTranslateY() + this.speed;
-		default:
-			return this.getTranslateY();
-		}
+		return 0;
 	}
 	public void moveUp() {
 		this.setTranslateY(this.getTranslateY()-this.speed);

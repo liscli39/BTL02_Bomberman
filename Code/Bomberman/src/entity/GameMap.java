@@ -37,8 +37,10 @@ public class GameMap extends AnchorPane{
 	private Collision collision;
 	private char[][] mapc;
 	private boolean isLife;
+	private boolean isPvsP;
 	
 	private Bomber bomber;
+	private Bomber bomber_;
 	private List<Enemy> enemys;
 	private List<Barrier> walls;
 	private List<Barrier> bricks;
@@ -50,6 +52,7 @@ public class GameMap extends AnchorPane{
 		super();
 		this.scale = scale;
 		this.numMap = map;
+		this.isPvsP = false;
 		InitializeComponent();
 	}
 	public void nextLevel() {
@@ -59,14 +62,25 @@ public class GameMap extends AnchorPane{
 	}
 	public void playAgain() {
 		this.getChildren().clear();
+		this.numMap = 0;
+		this.isPvsP = false;
+		InitializeComponent();
+	}
+	public void pvsp() {
+		this.numMap = 11;
+		this.isPvsP = true;
+		this.getChildren().clear();
 		InitializeComponent();
 	}
 	public int getMapNum() {
 		return numMap;
 	}
+	public void setMapNum(int map) {
+		this.numMap = map;
+	}
 	private void InitializeComponent() {
 		this.setFocused(true);
-		
+		Bomber.ID = 0;
 		get = new GetInput(numMap);
 		keyBoard = new HashMap<>();
 		collision = new Collision(); 
@@ -78,6 +92,11 @@ public class GameMap extends AnchorPane{
 		bomber = new Bomber(0,0,scale);
 		bombs = new ArrayList<>();
 		flames = new ArrayList<>();
+		if(this.isPvsP) {
+			bomber_ = new Bomber(0,0,this.scale);
+			System.out.println(bomber.getPlayerId());
+			System.out.println(bomber_.getPlayerId());
+		}
 		
 		this.setTranslateX(0);
 		this.setTranslateY(0);
@@ -116,7 +135,7 @@ public class GameMap extends AnchorPane{
 						this.getChildren().add(p);
 						break;
 					case 'p':
-						bomber.setPosision(x, y);
+						bomber.setFirstPosision(x, y);
 						this.getChildren().add(bomber);
 						break;
 					case '1':
@@ -144,6 +163,12 @@ public class GameMap extends AnchorPane{
 						items.add(si);
 						this.getChildren().add(si);
 						break;
+					case 'e':
+						if(this.isPvsP) {
+							bomber_.setFirstPosision(x, y);
+							this.getChildren().add(bomber_);
+						}
+						break;
 					default: break;
 				}
 			}
@@ -153,7 +178,8 @@ public class GameMap extends AnchorPane{
 	}
 	
 	public int update() {
-		if(isLife) {	
+		if(isLife) {
+//		printMapc();
 		// get keyBoard event
 		keyBoard.forEach((k,v) -> {
 			List<ImageView> barriers = new LinkedList<>();
@@ -182,7 +208,7 @@ public class GameMap extends AnchorPane{
 					if(v && collision.canMove(bomber, "right", scale, barriers)
 							&& !collision.hitBomb(bomber, mapc, scale, "right")) {
 						bomber.moveRight();
-						if(bomber.getTranslateX() > (this.getHeight()/2) && this.getTranslateX() >= this.getHeight()-this.getWidth() ) {
+						if(!isPvsP && bomber.getTranslateX() > (this.getHeight()/2) && this.getTranslateX() > this.getHeight()-this.getWidth() ) {
 							this.setTranslateX(this.getTranslateX() - bomber.getSpeed());
 						}
 					}
@@ -191,18 +217,17 @@ public class GameMap extends AnchorPane{
 					if(v && collision.canMove(bomber, "left", scale, barriers)
 							&& !collision.hitBomb(bomber, mapc, scale, "left")) {
 						bomber.moveLeft();
-						if(bomber.getTranslateX() < this.getWidth()- this.getHeight()/2 && this.getTranslateX() <= 0) {
+						if(!isPvsP && bomber.getTranslateX() < this.getWidth()- this.getHeight()/2 && this.getTranslateX() < 0) {
 							this.setTranslateX(this.getTranslateX()+ bomber.getSpeed());
 						}
 					}
 					break;
 				case SPACE:
-					if(v) {
-						
+					if(v) {						
 						v = false;
 						if(bomber.hasBomb()) {
 							Bomb nb = bomber.putBomb();
-							mapc[(int)nb.getTranslateY()/this.scale][(int)nb.getTranslateX()/this.scale]='b';
+							mapc[(int)(nb.getTranslateY()/this.scale)][(int)(nb.getTranslateX()/this.scale)]='b';
 							boolean canPut = true;
 							for(Bomb b : bombs) {
 								if(collision.isDuplicate(b,nb)) {
@@ -219,10 +244,91 @@ public class GameMap extends AnchorPane{
 						}
 					}
 					break;
+				case UP:
+					if(isPvsP) { if(v && collision.canMove(bomber_, "up", scale, barriers)
+							&& !collision.hitBomb(bomber_, mapc, scale, "up")) {
+						bomber_.moveUp();
+					}}else {if(v && collision.canMove(bomber, "up", scale, barriers)
+							&& !collision.hitBomb(bomber, mapc, scale, "up")) {
+						bomber.moveUp();
+					}}
+					break;
+				case DOWN:
+					if(isPvsP) {if(v && collision.canMove(bomber_, "down", scale, barriers)
+							&& !collision.hitBomb(bomber_, mapc, scale, "down")) {
+						bomber_.moveDown();
+					}}else {if( v && collision.canMove(bomber, "down", scale, barriers)
+							&& !collision.hitBomb(bomber, mapc, scale, "down")) {
+						bomber.moveDown();
+					}}
+					break;
+				case RIGHT:
+					if(isPvsP) {if(v && collision.canMove(bomber_, "right", scale, barriers)
+							&& !collision.hitBomb(bomber_, mapc, scale, "right")) {
+						bomber_.moveRight();
+					}}else {
+					if(v && collision.canMove(bomber, "right", scale, barriers)
+							&& !collision.hitBomb(bomber, mapc, scale, "right")) {
+						bomber.moveRight();
+						if(bomber.getTranslateX() > (this.getHeight()/2) && this.getTranslateX() > this.getHeight()-this.getWidth() ) {
+							this.setTranslateX(this.getTranslateX() - bomber.getSpeed());
+						}
+					}}
+					break;
+				case LEFT:
+					if(isPvsP) {if( v && collision.canMove(bomber_, "left", scale, barriers)
+							&& !collision.hitBomb(bomber_, mapc, scale, "left")) {
+						bomber_.moveLeft();
+					}}else {
+					if( v && collision.canMove(bomber, "left", scale, barriers)
+							&& !collision.hitBomb(bomber, mapc, scale, "left")) {
+						bomber.moveLeft();
+						if(bomber.getTranslateX() < this.getWidth()- this.getHeight()/2 && this.getTranslateX() < 0) {
+							this.setTranslateX(this.getTranslateX()+ bomber.getSpeed());
+						}
+					}}
+					break;
+				case ENTER:
+					if(isPvsP && v) {
+						v = false;
+						if(bomber_.hasBomb()) {
+							Bomb nb = bomber_.putBomb();
+							mapc[(int)(nb.getTranslateY()/this.scale)][(int)(nb.getTranslateX()/this.scale)]='b';
+							boolean canPut = true;
+							for(Bomb b : bombs) {
+								if(collision.isDuplicate(b,nb)) {
+									bomber_.addBomb();
+									canPut = false;
+									break;
+								}
+							}
+							if(canPut) {
+								bombs.add(nb);
+								this.getChildren().add(nb);
+								bomber_.toFront();
+							}
+						}
+					}
+					break;
 				default:
 					break;					
 			}
 		});
+		//
+		int x,y;
+		if((int)bomber.getTranslateX()%scale < scale/2) x = (int)(bomber.getTranslateX()/scale);
+		else  x = (int)(bomber.getTranslateX()/scale) + 1;
+		
+		if((int)bomber.getTranslateY()%scale < scale/2) y = (int)(bomber.getTranslateY()/scale);
+		else  y = (int)(bomber.getTranslateY()/scale) + 1;
+		if(!bomber.isCurrentPos(x, y)) {
+			int pos[] = bomber.getPos();
+			if(mapc[y][x]!='b' && mapc[pos[1]][pos[0]]!='b') {
+				mapc[pos[1]][pos[0]] = ' ';
+			}
+			mapc[y][x] ='p';
+			bomber.setPosision(x, y);
+		}
 		// count down bomb
 		Iterator<Bomb> ib = bombs.listIterator();
 		while(ib.hasNext()){
@@ -238,10 +344,14 @@ public class GameMap extends AnchorPane{
 				b.timeDown();
 			}else {
 				List<Flame> nfs =b.explosive(mapc);
-				mapc[(int)b.getTranslateY()/this.scale][(int)b.getTranslateX()/this.scale]=' ';
+				mapc[(int)(b.getTranslateY()/this.scale)][(int)(b.getTranslateX()/this.scale)]=' ';
 				this.getChildren().remove(b);
+				if(b.getPlayerId()== 0) {
+					bomber.addBomb();
+				}else if(b.getPlayerId()== 1) {
+					bomber_.addBomb();
+				}
 				ib.remove();
-				bomber.addBomb();
 				
 				nfs.forEach(f->{
 					this.getChildren().add(f);
@@ -251,8 +361,8 @@ public class GameMap extends AnchorPane{
 						Item item = ii.next();
 						if(collision.isDuplicate(item,f)) {						
 							if(item.isBrick() && item instanceof Portal) {
-								mapc[(int)item.getTranslateY()/this.scale][(int)item.getTranslateX()/this.scale] = 'x';
-							}else mapc[(int)item.getTranslateY()/this.scale][(int)item.getTranslateX()/this.scale] = ' ';
+								mapc[(int)(item.getTranslateY()/this.scale)][(int)(item.getTranslateX()/this.scale)] = 'x';
+							}else mapc[(int)(item.getTranslateY()/this.scale)][(int)(item.getTranslateX()/this.scale)] = ' ';
 							
 							if(item.isBrick()  || item instanceof Portal) {
 								item.showItem();
@@ -298,7 +408,11 @@ public class GameMap extends AnchorPane{
 					bomberDeadAction();
 				}
 				if(!bomber.isLife() && bomber.getLife() >0) bomber.riseUp();
-				
+				if(isPvsP) {
+				if(bomber_.getTimeNonDie() <= 0 && bomber_.isLife() && collision.collisionDetection(bomber_.getTranslateX(), bomber_.getTranslateY(), f.getTranslateX(), f.getTranslateY(), scale-scale/5)) {
+					bomberDeadAction();
+				}
+				if(!bomber_.isLife() && bomber_.getLife() >0) bomber_.riseUp();}
 			}else {
 				this.getChildren().remove(f);
 				ifl.remove();
@@ -306,6 +420,7 @@ public class GameMap extends AnchorPane{
 			
 		}
 		if(bomber.getTimeNonDie()>0) bomber.timeOff();
+		if(isPvsP && bomber_.getTimeNonDie()>0) bomber_.timeOff();
 		//
 		Iterator<Item> ii = items.listIterator();
 		while(ii.hasNext()) {
@@ -314,7 +429,18 @@ public class GameMap extends AnchorPane{
 				if(item instanceof SpeedItem) bomber.speedUp();
 				if(item instanceof BombItem) bomber.addBomb();
 				if(item instanceof FlameItem) bomber.powerUp();
-				if(item instanceof Portal) return 2;
+				if(!(item instanceof Portal)) {
+					mapc[(int)item.getTranslateY()/this.scale][(int)item.getTranslateX()/this.scale] = ' ';
+					this.getChildren().remove(item);
+					ii.remove();
+				}
+				if(item instanceof Portal && enemys.isEmpty()) return 2;
+				
+			}
+			if(isPvsP && !item.isBrick() && collision.canEat(bomber_, scale, item)) {
+				if(item instanceof SpeedItem) bomber_.speedUp();
+				if(item instanceof BombItem) bomber_.addBomb();
+				if(item instanceof FlameItem) bomber_.powerUp();
 				mapc[(int)item.getTranslateY()/this.scale][(int)item.getTranslateX()/this.scale] = ' ';
 				this.getChildren().remove(item);
 				ii.remove();
@@ -322,7 +448,7 @@ public class GameMap extends AnchorPane{
 		}
 		//enemy move
 		enemys.forEach(e ->{
-			e.dumpMove(mapc);			
+			e.dumpMove(mapc,get.getWeight(),get.getHeight());
 			if(bomber.getTimeNonDie() <= 0 && bomber.isLife() && collision.collisionDetection(bomber.getTranslateX(), bomber.getTranslateY(), e.getTranslateX(), e.getTranslateY(), scale-scale/5)) {
 				bomberDeadAction();
 			}
@@ -331,18 +457,51 @@ public class GameMap extends AnchorPane{
 		if(!isLife) return 1;
 		return 0;
 	}
-	public void changeSize(int scale) {
+	public void changeSize(double scale) {
+		this.scale = (int)scale;
+		
 		bomber.setFitWidth(scale);
 		bomber.setFitHeight(scale);
-//		private List<Enemy> enemys;
-//		private List<Barrier> walls;
-//		private List<Barrier> bricks;
-//		private List<Item> items;
-//		private List<Bomb> bombs;
-//		private List<Flame> flames;
+		
+		enemys.forEach(e->{
+			e.setTranslateX(e.getTranslateX()*scale);
+			e.setTranslateY(e.getTranslateY()*scale);
+			e.setFitWidth(scale);
+			e.setFitHeight(scale);
+		});
+		walls.forEach(w->{
+			w.setTranslateX(w.getTranslateX()*scale);
+			w.setTranslateY(w.getTranslateY()*scale);
+			w.setFitWidth(scale);
+			w.setFitHeight(scale);
+		});
+		bricks.forEach(b->{
+			b.setTranslateX(b.getTranslateX()*scale);
+			b.setTranslateY(b.getTranslateY()*scale);
+			b.setFitWidth(scale);
+			b.setFitHeight(scale);
+		});;
+		items.forEach(i->{
+			i.setTranslateX(i.getTranslateX()*scale);
+			i.setTranslateY(i.getTranslateY()*scale);
+			i.setFitWidth(scale);
+			i.setFitHeight(scale);
+		});
+		bombs.forEach(b->{
+			b.setTranslateX(b.getTranslateX()*scale);
+			b.setTranslateY(b.getTranslateY()*scale);
+			b.setFitWidth(scale);
+			b.setFitHeight(scale);
+		});;
+		flames.forEach(f->{
+			f.setTranslateX(f.getTranslateX()*scale);
+			f.setTranslateY(f.getTranslateY()*scale);
+			f.setFitWidth(scale);
+			f.setFitHeight(scale);
+		});
 	}
 	
-	public void printMapc() {
+	public void printMapc() { 
 		for(int i=0;i<get.getHeight();i++){
 			for(int j=0;j<get.getWeight();j++) {
 				System.out.print(mapc[i][j]);
