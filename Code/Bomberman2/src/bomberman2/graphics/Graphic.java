@@ -36,6 +36,7 @@ public class Graphic extends Level{
         this.input = new InputGraphics();
         this.InitializeComponent(input.getStringMap(level));
         Graphic.cmap = this.input.getCharMap();
+        this.themeId = 0;
 //        this.input.printMap();
         Graphic.theme = new Theme();
         Graphic.theme.setTheme("noel");  
@@ -77,6 +78,14 @@ public class Graphic extends Level{
         }
         System.out.println("------------------");
     }
+    public static void changeTheme(){
+        if(Graphic.themeId < 1){
+            Graphic.theme.setTheme(themes[++Graphic.themeId]);
+        }else {
+            Graphic.themeId = 0;
+            Graphic.theme.setTheme(themes[Graphic.themeId]);
+        }
+    }
     private InputGraphics input;
     public static double entitiesW;
     public static double entitiesH;
@@ -84,4 +93,6 @@ public class Graphic extends Level{
     public static double height;
     public static Theme theme;
     public static char[][] cmap;
+    public static String[] themes = {"classic","noel"};
+    private static int themeId;
 }

@@ -24,8 +24,8 @@ public class Collision {
         double realx2 = x2 + 0.5*Graphic.entitiesW;
         double realy2 = y2 + 0.5*Graphic.entitiesH;
         
-        return Math.abs(realx1-realx2) < 0.9*Graphic.entitiesW
-                && Math.abs(realy1-realy2) < 0.9*Graphic.entitiesH;
+        return Math.abs(realx1-realx2) < 0.8*Graphic.entitiesW
+                && Math.abs(realy1-realy2) < 0.8*Graphic.entitiesH;
     }
     
     public static boolean canMove(Mob m,int direction, List<StaticEntity> ste){

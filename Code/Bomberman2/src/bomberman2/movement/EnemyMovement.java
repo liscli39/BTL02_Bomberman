@@ -177,15 +177,48 @@ public class EnemyMovement {
         }
     }
     private static double heuristic(State m, State end){
-        int x = m.getX();
-        int y = m.getY();
-        if(Graphic.cmap[x][y-1]=='o') return 999;
-        if(Graphic.cmap[x][y+1]=='o') return 999;
-        if(Graphic.cmap[x+1][y]=='o') return 999;
-        if(Graphic.cmap[x-1][y]=='o') return 999;
+        int x_ = m.getX();
+        int y_ = m.getY();
+
         int x1 = end.getX();
         int y1 = end.getY();
-        return Math.sqrt((x-x1)*(x-x1)+(y-y1)*(y-y1));
+        
+        double heuristic = Math.sqrt((x_-x1)*(x_-x1)+(y_-y1)*(y_-y1));
+        //
+        int x = x_;
+        int y = y_;
+        if(Graphic.cmap[x][y-1]=='o') heuristic += 99;
+        if(Graphic.cmap[x][y+1]=='o') heuristic += 99;
+        if(Graphic.cmap[x+1][y]=='o') heuristic += 99;
+        if(Graphic.cmap[x-1][y]=='o') heuristic += 99;
+//        if(Graphic.cmap[x][y-2]=='o') heuristic += 99;
+//        if(Graphic.cmap[x][y+2]=='o') heuristic += 99;
+//        if(Graphic.cmap[x+2][y]=='o') heuristic += 99;
+//        if(Graphic.cmap[x-2][y]=='o') heuristic += 99;
+        //
+        return heuristic;
+    }
+
+//    private static void destroyBrick(Player p){
+//        getNearestBrick(p.getEnityX(),p.getEnityY());
+//    }
+    private static State getNearestBrick(State p){
+        int x = 0;
+        int y = 0;
+        double min = Math.sqrt(Graphic.weight*Graphic.weight + Graphic.height*Graphic.height);
+        for(int i = (int)Graphic.weight;i<0;i++)
+            for(int j= (int)Graphic.height;j<0;j++){
+                if(Graphic.cmap[i][j]=='*'){
+                    double d = Math.sqrt((p.getX()-i)*(p.getX()-i)+(p.getY()-j)*(p.getY()-j));
+                    if(d<min){
+                        min = d;
+                        x = i;
+                        y = j;
+                    }
+                }
+            }
+        
+        return new State(x,y);
     }
     
 }

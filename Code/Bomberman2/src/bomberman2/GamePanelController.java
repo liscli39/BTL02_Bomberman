@@ -29,11 +29,13 @@ import javafx.scene.layout.AnchorPane;
 public class GamePanelController implements Initializable {
     @FXML
     private AnchorPane play,start,property,pause,black,
-            pane,blank1,blank2;
+            pane,blank1,blank2,blank3,blank31;
     @FXML
     private Label message,enemy,life,time,mapN;
     @FXML
     private ImageView pauseBtn,sound,music,sound1,music1;
+    @FXML
+    private Button themes;
     @FXML
     private void handleAction(MouseEvent e){
         if(e.getTarget() == pauseBtn){
@@ -71,7 +73,12 @@ public class GamePanelController implements Initializable {
         }
     }
     private void soundClickAction(MouseEvent e){
-        
+       
+    }
+    @FXML
+    private void changeThemeBtnAction(ActionEvent e){
+        Graphic.changeTheme();
+        themes.setText("Theme: " + Graphic.theme.toString());
     }
     @FXML
     private void playBtnAction(ActionEvent e){
@@ -85,8 +92,10 @@ public class GamePanelController implements Initializable {
         pane.setStyle("-fx-background-radius: 10; -fx-background-color: #C92D44;");
         blank1.setStyle("-fx-background-color: #C92D44; -fx-background-radius: 10;");
         blank2.setStyle("-fx-background-color: #C92D44; -fx-background-radius: 10;");
+        blank3.setStyle("-fx-background-color: #C92D44; -fx-background-radius: 10;");
+        blank31.setStyle("-fx-background-color: #C92D44; -fx-background-radius: 10;");
         
-        map.setLevel(1);
+        map.setLevel(3);
         map.setIsPvsP(false);
         map.reset();
 
@@ -102,7 +111,9 @@ public class GamePanelController implements Initializable {
         pane.setStyle("-fx-background-radius: 10; -fx-background-color: #DB7382;");
         blank1.setStyle("-fx-background-color: #DB7382; -fx-background-radius: 10;");
         blank2.setStyle("-fx-background-color: #DB7382; -fx-background-radius: 10;");
-        
+        blank3.setStyle("-fx-background-color: #DB7382; -fx-background-radius: 10;");
+        blank31.setStyle("-fx-background-color: #DB7382; -fx-background-radius: 10;");
+
         property.setVisible(true);
         map.setIsPvsP(true);
         play.toFront();
@@ -133,6 +144,8 @@ public class GamePanelController implements Initializable {
         pane.setStyle("-fx-background-radius: 10; -fx-background-color: #85CBF8;");
         blank1.setStyle("-fx-background-color: #85CBF8; -fx-background-radius: 10;");
         blank2.setStyle("-fx-background-color: #85CBF8; -fx-background-radius: 10;");
+        blank3.setStyle("-fx-background-color: #85CBF8; -fx-background-radius: 10;");
+        blank31.setStyle("-fx-background-color: #85CBF8; -fx-background-radius: 10;");
         
         start.setVisible(true);
 
@@ -144,7 +157,7 @@ public class GamePanelController implements Initializable {
         map = new GameMap(play.getPrefWidth(),play.getPrefHeight());
         clock = new Timer(3,0);
         play.getChildren().add(map);
-        
+        themes.setText("Theme: "+Graphic.theme.toString());
         timer = new AnimationTimer() {
             private long lastUpdate = 0;
             private long lastTime = 0;
@@ -200,6 +213,8 @@ public class GamePanelController implements Initializable {
                 black.setVisible(true);
                 black.toFront();
                 message.setText("You die!\nLife:" + map.getPlayerLife());
+                map.setTranslateX(0);
+                map.setTranslateY(0);
                 clock.pause();
                 break;
             case 3: // GameOver
