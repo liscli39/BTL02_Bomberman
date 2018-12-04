@@ -31,7 +31,7 @@ public abstract class AI {
     }   
     protected static int AStarSearch(Mob m, State p){
         State start = new State(m.getEnityX(),m.getEnityY());
-        State end = new State(p.getX(),p.getX());
+        State end = new State(p.getX(),p.getY());
 //        System.out.println(start.getX() + " " +start.getY());
         MyPriorityQueue<Element> pq = new MyPriorityQueue<>();
         List<Integer> actions = new LinkedList<>();
@@ -58,9 +58,15 @@ public abstract class AI {
             if(isContinue) continue;
             
             if(state.equals(end)){
-                if(actions.isEmpty()) return 0;
-                return actions.get(0);
-            }           
+//                actions.forEach(a->{
+//                    System.out.print(a);
+//                });
+//                System.out.println();
+                if(actions.size() > 0){
+                    return actions.get(0);
+                }
+            }
+            
             visited.add(state);
             
             List<Integer> direct = getListDirection(state.getX(),state.getY());
