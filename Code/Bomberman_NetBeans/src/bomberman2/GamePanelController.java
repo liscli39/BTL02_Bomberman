@@ -104,7 +104,7 @@ public class GamePanelController implements Initializable {
         blank3.setStyle("-fx-background-color: #C92D44; -fx-background-radius: 10;");
         blank31.setStyle("-fx-background-color: #C92D44; -fx-background-radius: 10;");
         
-        map.setLevel(1);
+        map.setLevel(3);
         map.setIsPvsP(false);
         map.reset();
 
